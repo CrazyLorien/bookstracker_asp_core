@@ -3,13 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Angular2Blank", "Angular2Blank\Angular2Blank.xproj", "{D0180468-DAEE-4F3D-8E7E-27A56C0A9695}"
-EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Angular2Blank.Data", "Angular2Blank.Data\Angular2Blank.Data.xproj", "{57770D7B-8CA1-40BB-BEF8-CB416CD0F21C}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Angular2Blank.Services", "Angular2Blank.Services\Angular2Blank.Services.xproj", "{30309D9A-58F3-4782-922D-A40863AF2E70}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Angular2Blank.Common", "Angular2Blank.Common\Angular2Blank.Common.xproj", "{66DF3342-32C1-47BF-9DAE-5666C0A3B79D}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Angular2Blank.Web", "Angular2Blank.Web\Angular2Blank.Web.xproj", "{6C7D0DEE-588B-4731-B9CD-489CE0B4BED6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{ADD9BE74-4921-466B-B30B-EDC3BFDF9AC5}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +22,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D0180468-DAEE-4F3D-8E7E-27A56C0A9695}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D0180468-DAEE-4F3D-8E7E-27A56C0A9695}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D0180468-DAEE-4F3D-8E7E-27A56C0A9695}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D0180468-DAEE-4F3D-8E7E-27A56C0A9695}.Release|Any CPU.Build.0 = Release|Any CPU
 		{57770D7B-8CA1-40BB-BEF8-CB416CD0F21C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{57770D7B-8CA1-40BB-BEF8-CB416CD0F21C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57770D7B-8CA1-40BB-BEF8-CB416CD0F21C}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -33,6 +34,10 @@ Global
 		{66DF3342-32C1-47BF-9DAE-5666C0A3B79D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66DF3342-32C1-47BF-9DAE-5666C0A3B79D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66DF3342-32C1-47BF-9DAE-5666C0A3B79D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C7D0DEE-588B-4731-B9CD-489CE0B4BED6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C7D0DEE-588B-4731-B9CD-489CE0B4BED6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C7D0DEE-588B-4731-B9CD-489CE0B4BED6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C7D0DEE-588B-4731-B9CD-489CE0B4BED6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

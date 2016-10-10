@@ -1,11 +1,11 @@
 ﻿using System;
-using System.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using Microsoft.AspNet.Authentication;
-using Microsoft.AspNet.Http.Authentication;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http.Authentication;
+using Microsoft.IdentityModel.Tokens;
 
-namespace Angular2Blank.Authentication
+namespace Angular2Blank.Web.Authentication
 {
     public class CustomJwtDataFormat : ISecureDataFormat<AuthenticationTicket>
     {

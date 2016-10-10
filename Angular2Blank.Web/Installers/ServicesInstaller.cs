@@ -2,7 +2,7 @@
 using Angular2Blank.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Angular2Blank.Installers
+namespace Angular2Blank.Web.Installers
 {
     public class ServicesInstaller
     {

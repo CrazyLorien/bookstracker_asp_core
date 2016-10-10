@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNet.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 
-namespace Angular2Blank.Installers
+namespace Angular2Blank.Web.Installers
 {
     public class WebInstaller
     {

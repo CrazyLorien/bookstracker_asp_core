@@ -1,7 +1,7 @@
 ﻿using System;
-using System.IdentityModel.Tokens;
+using Microsoft.IdentityModel.Tokens;
 
-namespace Angular2Blank.Authentication
+namespace Angular2Blank.Web.Authentication
 {
     public class TokenProviderOptions
     {

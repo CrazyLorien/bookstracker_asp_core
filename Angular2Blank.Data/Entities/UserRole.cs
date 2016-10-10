@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.Data.Entity.Metadata.Internal;
 
 namespace Angular2Blank.Data.Entities
 {

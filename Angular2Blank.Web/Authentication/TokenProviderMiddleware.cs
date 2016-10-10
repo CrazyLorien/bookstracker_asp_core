@@ -3,28 +3,31 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
-using Angular2Blank.Common.Extensions;
 using Angular2Blank.Services.Interfaces;
-using Microsoft.AspNet.Builder;
-using Microsoft.AspNet.Http;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using Angular2Blank.Common.Extensions;
+using Angular2Blank.Services.Providers;
 
-namespace Angular2Blank.Authentication
+namespace Angular2Blank.Web.Authentication
 {
     public class TokenProviderMiddleware
     {
         private readonly RequestDelegate _next;
         private readonly TokenProviderOptions _options;
         private readonly IUserService _userService;
+        private readonly IPasswordProvider _passwordProvider;
 
         public TokenProviderMiddleware(
             RequestDelegate next,
             TokenProviderOptions options,
-            IUserService userService)
+            IUserService userService,
+            IPasswordProvider passwordProvider)
         {
             _next = next;
             _options = options;
             _userService = userService;
+            _passwordProvider = passwordProvider;
         }
 
         public Task Invoke(HttpContext context)
@@ -84,15 +87,12 @@ namespace Angular2Blank.Authentication
 
         private async Task<ClaimsIdentity> GetIdentity(string username, string password, DateTime dateTime)
         {
-            CancellationTokenSource cancelTokenSource = new CancellationTokenSource();
-            CancellationToken token = cancelTokenSource.Token;
-            var user = await _userService.FindByNameAsync(username, token);
+            var user = await _userService.FindByNameAsync(username);
 
             if (user == null)
                 return null;
 
-            //todo verify hash
-            if (/*!_passwordProvider.VerifyHashedPassword(user.PasswordHash, password)*/ false)
+            if (!_passwordProvider.VerifyPassword(user.PasswordHash, password))
                 return null;
 
             return new ClaimsIdentity(new System.Security.Principal.GenericIdentity(username, "Token"), 

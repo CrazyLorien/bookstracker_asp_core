@@ -7,7 +7,7 @@ using Angular2Blank.Data.Repository;
 using Angular2Blank.Services.Dtos;
 using Angular2Blank.Services.Interfaces;
 using Angular2Blank.Services.Mappers;
-using Microsoft.Data.Entity;
+using Angular2Blank.Data.Extensions;
 
 namespace Angular2Blank.Services.Implementation
 {
@@ -24,153 +24,115 @@ namespace Angular2Blank.Services.Implementation
             _roleRepository = roleRepository;
         }
 
-        public Task<UserDto> CreateAsync(UserDto user, CancellationToken cancellationToken)
+        public async Task<UserDto> CreateAsync(UserDto user)
         {
-            return Task.Run(async () =>
-            {
-                var entity = user.MapToEntity();
-                await Repository.AddAsync(entity);
+            var entity = user.MapToEntity();
+            await Repository.AddAsync(entity);
 
-                return entity.MapToDto();
-            }, cancellationToken);
+            return entity.MapToDto();
         }
 
-        public Task UpdateAsync(UserDto user, CancellationToken cancellationToken)
+        public Task UpdateAsync(UserDto user)
         {
-            return Task.Run(async () =>
-            {
-                var entity = user.MapToEntity();
-                await Repository.UpdateAsync(entity);
-            }, cancellationToken);
+            var entity = user.MapToEntity();
+            return Repository.UpdateAsync(entity);
         }
 
-        public Task DeleteAsync(UserDto user, CancellationToken cancellationToken)
+        public Task DeleteAsync(UserDto user)
         {
-            return Task.Run(async () =>
-            {
-                var entity = user.MapToEntity();
-                await Repository.DeleteAsync(entity);
-            }, cancellationToken);
+            var entity = user.MapToEntity();
+            return Repository.DeleteAsync(entity);
         }
 
-        public Task<UserDto> FindByIdAsync(string userId, CancellationToken cancellationToken)
+        public async Task<UserDto> FindByIdAsync(int userId)
         {
-            return Task.Run(async () => 
-            {
-                var user = await Repository.GetById(int.Parse(userId));
-                return user.MapToDto();
-            }, cancellationToken);
+            var user = await Repository.GetById(userId);
+            return user.MapToDto();
         }
 
-        public Task<UserDto> FindByNameAsync(string userName, CancellationToken cancellationToken)
+        public async Task<UserDto> FindByNameAsync(string userName)
         {
-            return Task.Run(async () =>
-            {
-                var user = await Repository.GetQuery()
-                    .FirstOrDefaultAsync(x => x.UserName == userName, cancellationToken: cancellationToken);
+            var user = await Repository.GetQuery()
+                .FirstOrDefaultAsync(x => x.UserName == userName);
 
-                return user.MapToDto();
-            }, cancellationToken);
+            return user.MapToDto();
         }
 
-        public Task<UserDto> FindByEmailAsync(string email, CancellationToken cancellationToken)
+        public async Task<UserDto> FindByEmailAsync(string email)
         {
-            return Task.Run(async () =>
-            {
-                var user = await Repository.GetQuery()
-                    .FirstOrDefaultAsync(x => x.Email == email, cancellationToken: cancellationToken);
+            var user = await Repository.GetQuery()
+                    .FirstOrDefaultAsync(x => x.Email == email);
 
-                return user.MapToDto();
-            }, cancellationToken);
+            return user.MapToDto();
         }
 
-        public Task AddToRoleAsync(UserDto user, string roleName, CancellationToken cancellationToken)
+        public async Task AddToRoleAsync(UserDto user, string roleName)
         {
-            return Task.Run(async () =>
+            var isInRole = await IsInRoleAsync(user, roleName);
+
+            if (isInRole)
+                return;
+
+            var role = await GetRoleByName(roleName);
+
+            var userRole = new UserRole
             {
-                var isInRole = await IsInRoleAsync(user, roleName, cancellationToken);
+                UserId = user.Id,
+                RoleId = role.Id
+            };
 
-                if (isInRole)
-                    return;
-
-                var role =  await GetRoleByName(roleName);
-
-                var userRole = new UserRole
-                {
-                    UserId = user.Id,
-                    RoleId = role.Id
-                };
-
-                await _userRoleRepository.AddAsync(userRole);
-
-            }, cancellationToken);
+            await _userRoleRepository.AddAsync(userRole);
         }
 
-        public Task RemoveFromRoleAsync(UserDto user, string roleName, CancellationToken cancellationToken)
+        public async Task RemoveFromRoleAsync(UserDto user, string roleName)
         {
-            return Task.Run(async () =>
-            {
-                var userRole = await _userRoleRepository.GetQuery()
-                    .FirstOrDefaultAsync(x => x.UserId == user.Id && x.Role.Name == roleName, cancellationToken: cancellationToken);
+            var userRole = await _userRoleRepository.GetQuery()
+                    .FirstOrDefaultAsync(x => x.UserId == user.Id && x.Role.Name == roleName);
 
-                if (userRole == null)
-                    return;
+            if (userRole == null)
+                return;
 
-                await _userRoleRepository.DeleteAsync(userRole);
-            }, cancellationToken);
+            await _userRoleRepository.DeleteAsync(userRole);
         }
 
-        public Task<IList<string>> GetRolesAsync(UserDto user, CancellationToken cancellationToken)
+        public Task<IList<string>> GetRolesAsync(UserDto user)
         {
-            return Task.Run<IList<string>>(() =>
-            {
-                var roles = _userRoleRepository.GetQuery()
+            var roles = _userRoleRepository.GetQuery()
                     .Where(x => x.UserId == user.Id)
                     .Select(x => x.Role.Name)
                     .ToList();
 
-                return roles;
-            }, cancellationToken);
+            return Task.FromResult<IList<string>>(roles);
         }
 
-        private Task<Role> GetRoleByName(string roleName)
+        private async Task<Role> GetRoleByName(string roleName)
         {
-            return Task.Run(async () =>
-            {
-                var role = await _roleRepository.GetQuery()
+            var role = await _roleRepository.GetQuery()
                     .FirstOrDefaultAsync(x => x.Name == roleName);
 
-                return role;
-            });
+            return role;
         }
 
-        public Task<bool> IsInRoleAsync(UserDto user, string roleName, CancellationToken cancellationToken)
+        public async Task<bool> IsInRoleAsync(UserDto user, string roleName)
         {
-            return Task.Run(async () =>
-            {
-                var role = await GetRoleByName(roleName);
+            var role = await GetRoleByName(roleName);
 
-                var hasRole = _userRoleRepository.GetQuery()
-                    .Any(x => x.UserId == user.Id && x.RoleId == role.Id);
+            var hasRole = _userRoleRepository.GetQuery()
+                .Any(x => x.UserId == user.Id && x.RoleId == role.Id);
 
-                return hasRole;
-
-            }, cancellationToken);
+            return hasRole;
         }
 
-        public Task<IList<UserDto>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken)
+        public Task<IList<UserDto>> GetUsersInRoleAsync(string roleName)
         {
-            return Task.Run<IList<UserDto>>(() =>
-            {
-                var usersDtos = _userRoleRepository.GetQuery()
+            var usersDtos = _userRoleRepository.GetQuery()
                     .Where(x => x.Role.Name == roleName)
                     .Select(x => x.User)
                     .ToList()
                     .Select(x => x.MapToDto())
                     .ToList();
 
-                return usersDtos;
-            }, cancellationToken);
+            return Task.FromResult<IList<UserDto>>(usersDtos);
         }
     }
 }

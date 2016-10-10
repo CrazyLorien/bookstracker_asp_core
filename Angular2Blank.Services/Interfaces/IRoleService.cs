@@ -6,10 +6,10 @@ namespace Angular2Blank.Services.Interfaces
 {
     public interface IRoleService
     {
-        Task<RoleDto> CreateAsync(RoleDto role, CancellationToken cancellationToken);
-        Task UpdateAsync(RoleDto role, CancellationToken cancellationToken);
-        Task DeleteAsync(RoleDto role, CancellationToken cancellationToken);
-        Task<RoleDto> FindByIdAsync(string roleId, CancellationToken cancellationToken);
-        Task<RoleDto> FindByNameAsync(string roleName, CancellationToken cancellationToken);
+        Task<RoleDto> CreateAsync(RoleDto role);
+        Task UpdateAsync(RoleDto role);
+        Task DeleteAsync(RoleDto role);
+        Task<RoleDto> FindByIdAsync(string roleId);
+        Task<RoleDto> FindByNameAsync(string roleName);
     }
 }

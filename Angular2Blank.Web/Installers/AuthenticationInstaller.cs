@@ -1,11 +1,10 @@
 ﻿using System;
-using System.IdentityModel.Tokens;
 using System.Text;
-using Angular2Blank.Authentication;
-using Microsoft.AspNet.Authentication.Cookies;
-using Microsoft.AspNet.Builder;
+using Angular2Blank.Web.Authentication;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.IdentityModel.Tokens;
 
-namespace Angular2Blank.Installers
+namespace Angular2Blank.Web.Installers
 {
     public class AuthenticationInstaller
     {
@@ -22,7 +21,7 @@ namespace Angular2Blank.Installers
             {
                 Audience = "ExampleAudience",
                 Issuer = "ExampleIssuer",
-                SigningCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HMAC_SHA256),
+                SigningCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256),
             };
 
             app.UseMiddleware<TokenProviderMiddleware>(o);
@@ -55,7 +54,7 @@ namespace Angular2Blank.Installers
                 AuthenticationScheme = "Cookie",
                 CookieName = "access_token",
                 TicketDataFormat = new CustomJwtDataFormat(
-                    SecurityAlgorithms.HMAC_SHA256,
+                    SecurityAlgorithms.HmacSha256,
                     tokenValidationParameters)
             });
         }

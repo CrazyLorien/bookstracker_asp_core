@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Angular2Blank.Data.Context;
 using Angular2Blank.Data.Entities;
-using Microsoft.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Angular2Blank.Data.Repository
 {
@@ -63,7 +63,7 @@ namespace Angular2Blank.Data.Repository
 
         public Task<T> GetById(int id)
         {
-            return _context.Set<T>().SingleOrDefaultAsync(x => x.Id == id);
+            return _context.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
         }
     }
 }

@@ -1,28 +1,15 @@
 {
-  "version": "1.0.0-*",
+  "version": "1.0.0",
   "description": "Angular2Blank.Services Class Library",
-  "authors": [ "Spaker" ],
-  "tags": [ "" ],
-  "projectUrl": "",
-  "licenseUrl": "",
-  "frameworks": {
-    "net451": {
-      "frameworkAssemblies": {
-        "System.Runtime": "4.0.0.0"  
-      }
-    },
-    "dotnet5.4": {
-      "dependencies": {
-        "Microsoft.CSharp": "4.0.1-beta-23516",
-        "System.Collections": "4.0.11-beta-23516",
-        "System.Linq": "4.0.1-beta-23516",
-        "System.Runtime": "4.0.21-beta-23516",
-        "System.Threading": "4.0.11-beta-23516"
-      }
-    }
-  },
+
   "dependencies": {
-    "Angular2Blank.Data": "1.0.0-*",
-    "Microsoft.AspNet.Cryptography.KeyDerivation": "1.0.0-rc1-final" 
+    "NETStandard.Library": "1.6.0",
+    "Angular2Blank.Data": "1.0.0",
+    "System.Linq": "4.1.0"
+  },
+
+  "frameworks": {
+    "netstandard1.6": {
+    }
   }
 }

@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel;
 using Angular2Blank.Data.Entities;
-using Microsoft.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Angular2Blank.Data.Context
 {
     public class Angular2BlankContext: DbContext
     {
-        public Angular2BlankContext()
+        public Angular2BlankContext(DbContextOptions options): base(options)
         {
             this.Init();
         }
