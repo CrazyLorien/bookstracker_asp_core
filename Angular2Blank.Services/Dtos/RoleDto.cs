@@ -1,0 +1,8 @@
+﻿namespace Angular2Blank.Services.Dtos
+{
+    public class RoleDto
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+}
