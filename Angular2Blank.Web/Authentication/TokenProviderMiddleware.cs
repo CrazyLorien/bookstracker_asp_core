@@ -1,13 +1,13 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Threading;
 using System.Threading.Tasks;
-using Angular2Blank.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Angular2Blank.Common.Extensions;
+using Angular2Blank.Services.Interfaces;
 using Angular2Blank.Services.Providers;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Angular2Blank.Web.Authentication
 {
@@ -15,18 +15,15 @@ namespace Angular2Blank.Web.Authentication
     {
         private readonly RequestDelegate _next;
         private readonly TokenProviderOptions _options;
-        private readonly IUserService _userService;
         private readonly IPasswordProvider _passwordProvider;
 
         public TokenProviderMiddleware(
             RequestDelegate next,
             TokenProviderOptions options,
-            IUserService userService,
             IPasswordProvider passwordProvider)
         {
             _next = next;
             _options = options;
-            _userService = userService;
             _passwordProvider = passwordProvider;
         }
 
@@ -56,7 +53,7 @@ namespace Angular2Blank.Web.Authentication
 
             var now = DateTime.UtcNow;
 
-            var identity = await GetIdentity(username, password, now);
+            var identity = await GetIdentity(context, username, password, now);
             if (identity == null)
             {
                 context.Response.StatusCode = 400;
@@ -85,23 +82,27 @@ namespace Angular2Blank.Web.Authentication
             await context.Response.WriteAsync(JsonConvert.SerializeObject(response, new JsonSerializerSettings { Formatting = Formatting.Indented }));
         }
 
-        private async Task<ClaimsIdentity> GetIdentity(string username, string password, DateTime dateTime)
+        private async Task<ClaimsIdentity> GetIdentity(HttpContext context, string username, string password, DateTime dateTime)
         {
-            var user = await _userService.FindByNameAsync(username);
+            var userService = context.RequestServices.GetService<IUserService>();
 
-            if (user == null)
+            var passwordHash = await userService.GetPasswordHashAsync(username);
+
+            if (passwordHash == null)
                 return null;
 
-            if (!_passwordProvider.VerifyPassword(user.PasswordHash, password))
+            if (!_passwordProvider.VerifyPassword(passwordHash, password))
                 return null;
 
-            return new ClaimsIdentity(new System.Security.Principal.GenericIdentity(username, "Token"), 
+            var user = await userService.FindByNameAsync(username);
+
+            return new ClaimsIdentity(new System.Security.Principal.GenericIdentity(user.Id.ToString(), "Token"), 
                     new Claim[]
                     {
-                        new Claim(JwtRegisteredClaimNames.Sub, username),
+                        new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                         new Claim(JwtRegisteredClaimNames.Iat, dateTime.ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64),
-                        new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString())
+                        new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString(), ClaimValueTypes.Integer32)
                     });
         }
     }

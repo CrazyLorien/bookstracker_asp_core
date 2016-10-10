@@ -8,6 +8,11 @@ namespace Angular2Blank.Data.Extensions
 {
     public static class QueryableExtensions
     {
+        public static Task<T> FirstOrDefaultAsync<T>(this IQueryable<T> query)
+        {
+            return EntityFrameworkQueryableExtensions.FirstOrDefaultAsync(query);
+        }
+
         public static Task<T> FirstOrDefaultAsync<T>(this IQueryable<T> query, Expression<Func<T, bool>> expr)
         {
             return EntityFrameworkQueryableExtensions.FirstOrDefaultAsync(query, expr);

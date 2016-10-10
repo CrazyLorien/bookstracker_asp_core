@@ -47,15 +47,14 @@ namespace Angular2Blank.Web.Installers
                 ClockSkew = TimeSpan.Zero
             };
 
-            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            //For authorize 
+            //Send header Authorization. Example
+            //Authorization: Bearer eyJhbGciO...
+            app.UseJwtBearerAuthentication(new JwtBearerOptions
             {
                 AutomaticAuthenticate = true,
                 AutomaticChallenge = true,
-                AuthenticationScheme = "Cookie",
-                CookieName = "access_token",
-                TicketDataFormat = new CustomJwtDataFormat(
-                    SecurityAlgorithms.HmacSha256,
-                    tokenValidationParameters)
+                TokenValidationParameters = tokenValidationParameters
             });
         }
 

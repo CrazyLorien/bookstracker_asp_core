@@ -11,7 +11,6 @@ namespace Angular2Blank.Services.Mappers
             {
                 Id = user.Id,
                 Email = user.Email,
-                PasswordHash = user.PasswordHash,
                 UserName = user.UserName
             };
         }
@@ -22,7 +21,6 @@ namespace Angular2Blank.Services.Mappers
             {
                 Id = dto.Id,
                 Email = dto.Email,
-                PasswordHash = dto.PasswordHash,
                 UserName = dto.UserName
             };
         }

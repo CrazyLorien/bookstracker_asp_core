@@ -21,15 +21,17 @@ namespace Angular2Blank.Services.Implementation
             return entity.MapToDto();
         }
 
-        public Task UpdateAsync(RoleDto role)
-        {
-            var entity = role.MapToEntity();
-            return Repository.UpdateAsync(entity);
-        }
-
-        public async Task DeleteAsync(RoleDto role)
+        public async Task UpdateAsync(RoleDto role)
         {
             var entity = await Repository.GetById(role.Id);
+            entity.Name = role.Name;
+
+            await Repository.UpdateAsync(entity);
+        }
+
+        public async Task DeleteAsync(int roleId)
+        {
+            var entity = await Repository.GetById(roleId);
             await Repository.DeleteAsync(entity);
         }
 

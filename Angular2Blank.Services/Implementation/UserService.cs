@@ -24,24 +24,29 @@ namespace Angular2Blank.Services.Implementation
             _roleRepository = roleRepository;
         }
 
-        public async Task<UserDto> CreateAsync(UserDto user)
+        public async Task<UserDto> CreateAsync(UserDto user, string passwordHash)
         {
             var entity = user.MapToEntity();
+            entity.PasswordHash = passwordHash;
+
             await Repository.AddAsync(entity);
 
             return entity.MapToDto();
         }
 
-        public Task UpdateAsync(UserDto user)
+        public async Task UpdateAsync(UserDto user)
         {
-            var entity = user.MapToEntity();
-            return Repository.UpdateAsync(entity);
+            var entity = await Repository.GetById(user.Id);
+            entity.Email = user.Email;
+            entity.UserName = user.UserName;
+
+            await Repository.UpdateAsync(entity);
         }
 
-        public Task DeleteAsync(UserDto user)
+        public async Task DeleteAsync(int userId)
         {
-            var entity = user.MapToEntity();
-            return Repository.DeleteAsync(entity);
+            var entity = await Repository.GetById(userId);
+            await Repository.DeleteAsync(entity);
         }
 
         public async Task<UserDto> FindByIdAsync(int userId)
@@ -56,6 +61,16 @@ namespace Angular2Blank.Services.Implementation
                 .FirstOrDefaultAsync(x => x.UserName == userName);
 
             return user.MapToDto();
+        }
+
+        public async Task<string> GetPasswordHashAsync(string userName)
+        {
+            var passwordHash = await Repository.GetQuery()
+                .Where(x => x.UserName == userName)
+                .Select(x => x.PasswordHash)
+                .FirstOrDefaultAsync();
+
+            return passwordHash;
         }
 
         public async Task<UserDto> FindByEmailAsync(string email)

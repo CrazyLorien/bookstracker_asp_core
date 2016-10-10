@@ -7,11 +7,12 @@ namespace Angular2Blank.Services.Interfaces
 {
     public interface IUserService
     {
-        Task<UserDto> CreateAsync(UserDto user);
+        Task<UserDto> CreateAsync(UserDto user, string passwordHash);
         Task UpdateAsync(UserDto user);
-        Task DeleteAsync(UserDto user);
+        Task DeleteAsync(int userId);
         Task<UserDto> FindByIdAsync(int userId);
         Task<UserDto> FindByNameAsync(string userName);
+        Task<string> GetPasswordHashAsync(string userName);
         Task<UserDto> FindByEmailAsync(string email);
         Task AddToRoleAsync(UserDto user, string roleName);
         Task RemoveFromRoleAsync(UserDto user, string roleName);

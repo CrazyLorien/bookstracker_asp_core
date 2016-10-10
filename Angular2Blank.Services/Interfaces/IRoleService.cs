@@ -8,7 +8,7 @@ namespace Angular2Blank.Services.Interfaces
     {
         Task<RoleDto> CreateAsync(RoleDto role);
         Task UpdateAsync(RoleDto role);
-        Task DeleteAsync(RoleDto role);
+        Task DeleteAsync(int roleId);
         Task<RoleDto> FindByIdAsync(string roleId);
         Task<RoleDto> FindByNameAsync(string roleName);
     }
