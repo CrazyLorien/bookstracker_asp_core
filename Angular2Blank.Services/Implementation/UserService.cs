@@ -63,14 +63,14 @@ namespace Angular2Blank.Services.Implementation
             return user.MapToDto();
         }
 
-        public async Task<string> GetPasswordHashAsync(string userName)
+        public Task<string> GetPasswordHashAsync(string userName)
         {
             var passwordHash = Repository.GetQuery()
                 .Where(x => x.UserName == userName)
                 .Select(x => x.PasswordHash)
                 .FirstOrDefaultAsync();
 
-            return await passwordHash;
+            return passwordHash;
         }
 
         public async Task<UserDto> FindByEmailAsync(string email)

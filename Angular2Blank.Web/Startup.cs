@@ -40,11 +40,6 @@ namespace Angular2Blank.Web
         {
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
-            //services.AddAuthorization(options =>
-            //{
-            //    options.AddPolicy("permissions",
-            //        policy => policy.RequireClaim("permission", "user"));
-            //});
 
             DataInstaller.Install(services, Configuration);
             ServicesInstaller.Install(services);
