@@ -24,7 +24,6 @@
   <ItemGroup>
     <Content Include="gulpfile.js" />
     <Content Include="index.html" />
-    <Content Include="readme.txt" />
     <Content Include="systemjs.config.js" />
     <Content Include="web.config" />
   </ItemGroup>
