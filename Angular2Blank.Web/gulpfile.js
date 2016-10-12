@@ -20,6 +20,8 @@ paths.css = paths.root + "/build/css";
 
 paths.siteJs = "site.js";
 paths.siteCss = "site.css";
+paths.siteMinCss = "site.min.css";
+paths.siteMinJs= "site.min.js";
 
 gulp.task('scss',
     function () {
@@ -28,15 +30,11 @@ gulp.task('scss',
             .pipe(sass())
             .pipe(sourcemaps.write())
             .pipe(gulp.dest(paths.css))
-            .pipe(concat(paths.siteCss));
-
-        if (dev) {
-            scssPipe = scssPipe.pipe(gulp.dest(paths.css));
-        } else {
-            scssPipe = scssPipe
-                .pipe(cssmin())
-                .pipe(gulp.dest(paths.css));
-        }
+            .pipe(concat(paths.siteCss))
+            .pipe(gulp.dest(paths.css))
+            .pipe(cssmin())
+            .pipe(concat(paths.siteMinCss))
+            .pipe(gulp.dest(paths.css));
 
         return scssPipe;
     });
@@ -48,15 +46,11 @@ gulp.task('ts',
             .pipe(typescript())
             .pipe(sourcemaps.write())
             .pipe(gulp.dest(paths.js))
-            .pipe(concat(paths.siteJs));
-
-        if (dev) {
-            jsPipe = jsPipe.pipe(gulp.dest(paths.js));
-        } else {
-            jsPipe = jsPipe
-                .pipe(uglify())
-                .pipe(gulp.dest(paths.js));
-        }
+            .pipe(concat(paths.siteJs))
+            .pipe(gulp.dest(paths.js))
+            .pipe(concat(paths.siteMinJs))
+            .pipe(uglify())
+            .pipe(gulp.dest(paths.js));
 
         return jsPipe;
     });
