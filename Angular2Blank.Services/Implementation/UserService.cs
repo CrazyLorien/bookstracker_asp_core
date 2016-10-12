@@ -81,9 +81,9 @@ namespace Angular2Blank.Services.Implementation
             return user.MapToDto();
         }
 
-        public async Task AddToRoleAsync(UserDto user, string roleName)
+        public async Task AddToRoleAsync(int userId, string roleName)
         {
-            var isInRole = await IsInRoleAsync(user, roleName);
+            var isInRole = await IsInRoleAsync(userId, roleName);
 
             if (isInRole)
                 return;
@@ -92,17 +92,17 @@ namespace Angular2Blank.Services.Implementation
 
             var userRole = new UserRole
             {
-                UserId = user.Id,
+                UserId = userId,
                 RoleId = role.Id
             };
 
             await _userRoleRepository.AddAsync(userRole);
         }
 
-        public async Task RemoveFromRoleAsync(UserDto user, string roleName)
+        public async Task RemoveFromRoleAsync(int userId, string roleName)
         {
             var userRole = await _userRoleRepository.GetQuery()
-                    .FirstOrDefaultAsync(x => x.UserId == user.Id && x.Role.Name == roleName);
+                    .FirstOrDefaultAsync(x => x.UserId == userId && x.Role.Name == roleName);
 
             if (userRole == null)
                 return;
@@ -110,10 +110,10 @@ namespace Angular2Blank.Services.Implementation
             await _userRoleRepository.DeleteAsync(userRole);
         }
 
-        public Task<IList<string>> GetRolesAsync(UserDto user)
+        public Task<IList<string>> GetRolesAsync(int userId)
         {
             var roles = _userRoleRepository.GetQuery()
-                    .Where(x => x.UserId == user.Id)
+                    .Where(x => x.UserId == userId)
                     .Select(x => x.Role.Name)
                     .ToList();
 
@@ -128,12 +128,12 @@ namespace Angular2Blank.Services.Implementation
             return role;
         }
 
-        public async Task<bool> IsInRoleAsync(UserDto user, string roleName)
+        public async Task<bool> IsInRoleAsync(int userId, string roleName)
         {
             var role = await GetRoleByName(roleName);
 
             var hasRole = _userRoleRepository.GetQuery()
-                .Any(x => x.UserId == user.Id && x.RoleId == role.Id);
+                .Any(x => x.UserId == userId && x.RoleId == role.Id);
 
             return hasRole;
         }

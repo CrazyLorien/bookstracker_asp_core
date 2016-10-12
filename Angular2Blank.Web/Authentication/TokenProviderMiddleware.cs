@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -95,15 +96,18 @@ namespace Angular2Blank.Web.Authentication
                 return null;
 
             var user = await userService.FindByNameAsync(username);
+            var roles = await userService.GetRolesAsync(user.Id);
 
-            return new ClaimsIdentity(new System.Security.Principal.GenericIdentity(user.Id.ToString(), "Token"), 
-                    new Claim[]
-                    {
-                        new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                        new Claim(JwtRegisteredClaimNames.Iat, dateTime.ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64),
-                        new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString(), ClaimValueTypes.Integer32)
-                    });
+            var claims = (new Claim[]
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.Iat, dateTime.ToUnixTimeSeconds().ToString(),
+                    ClaimValueTypes.Integer64),
+                new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString(), ClaimValueTypes.Integer32)
+            }).Union(roles.Select(x => new Claim(ClaimTypes.Role, x)));
+
+            return new ClaimsIdentity(new System.Security.Principal.GenericIdentity(user.Id.ToString(), "Token"), claims);
         }
     }
 }
