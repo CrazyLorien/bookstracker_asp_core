@@ -12,7 +12,7 @@ namespace Angular2Blank.Web.Installers
         {
             services.AddDbContext<Angular2BlankContext>(options =>
             {
-                options.UseSqlServer(configuration["Data:ConnectionString"]);
+                options.UseSqlServer(configuration["Data:ConnectionString"]);             
             });
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));

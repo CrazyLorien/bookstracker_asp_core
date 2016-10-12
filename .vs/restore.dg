@@ -1,5 +1,9 @@
+#:D:\Work\Current Projects\asp.net core\Angular2Blank.Common\Angular2Blank.Common.xproj
 #:D:\Work\Current Projects\asp.net core\Angular2Blank.Web\Angular2Blank.Web.xproj
 D:\Work\Current Projects\asp.net core\Angular2Blank.Web\Angular2Blank.Web.xproj|D:\Work\Current Projects\asp.net core\Angular2Blank.Common\Angular2Blank.Common.xproj
 D:\Work\Current Projects\asp.net core\Angular2Blank.Web\Angular2Blank.Web.xproj|D:\Work\Current Projects\asp.net core\Angular2Blank.Data\Angular2Blank.Data.xproj
 D:\Work\Current Projects\asp.net core\Angular2Blank.Web\Angular2Blank.Web.xproj|D:\Work\Current Projects\asp.net core\Angular2Blank.Services\Angular2Blank.Services.xproj
 D:\Work\Current Projects\asp.net core\Angular2Blank.Services\Angular2Blank.Services.xproj|D:\Work\Current Projects\asp.net core\Angular2Blank.Data\Angular2Blank.Data.xproj
+#:D:\Work\Current Projects\asp.net core\Angular2Blank.Services\Angular2Blank.Services.xproj
+D:\Work\Current Projects\asp.net core\Angular2Blank.Services\Angular2Blank.Services.xproj|D:\Work\Current Projects\asp.net core\Angular2Blank.Data\Angular2Blank.Data.xproj
+#:D:\Work\Current Projects\asp.net core\Angular2Blank.Data\Angular2Blank.Data.xproj

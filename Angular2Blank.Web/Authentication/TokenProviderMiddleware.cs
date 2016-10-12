@@ -9,6 +9,8 @@ using Angular2Blank.Common.Extensions;
 using Angular2Blank.Services.Interfaces;
 using Angular2Blank.Services.Providers;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using System.Collections.Generic;
 
 namespace Angular2Blank.Web.Authentication
 {
@@ -62,6 +64,8 @@ namespace Angular2Blank.Web.Authentication
                 return;
             }
 
+            identity.AddClaim(new Claim(ClaimTypes.Role, "user"));
+
             // Create the JWT and write it to a string
             var jwt = new JwtSecurityToken(
                 issuer: _options.Issuer,
@@ -86,6 +90,7 @@ namespace Angular2Blank.Web.Authentication
         private async Task<ClaimsIdentity> GetIdentity(HttpContext context, string username, string password, DateTime dateTime)
         {
             var userService = context.RequestServices.GetService<IUserService>();
+            var roleService = context.RequestServices.GetService<IRoleService>();
 
             var passwordHash = await userService.GetPasswordHashAsync(username);
 
@@ -96,6 +101,7 @@ namespace Angular2Blank.Web.Authentication
                 return null;
 
             var user = await userService.FindByNameAsync(username);
+
             var roles = await userService.GetRolesAsync(user.Id);
 
             var claims = (new Claim[]

@@ -8,7 +8,7 @@ namespace Angular2Blank.Web.Controllers
     [Route("/")]
     public class HomeController : BaseController
     {
-        [AllowAnonymous]
+        [Authorize(Roles = ", , ")]
         [HttpGet]
         public IActionResult Index()
         {

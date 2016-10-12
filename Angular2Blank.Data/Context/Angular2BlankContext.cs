@@ -23,3 +23,5 @@ namespace Angular2Blank.Data.Context
         public DbSet<UserRole> UserRoles { get; set; }
     }
 }
+
+
