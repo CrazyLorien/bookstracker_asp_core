@@ -8,20 +8,25 @@ var gulp = require("gulp"),
     sourcemaps = require("gulp-sourcemaps");
 
 var paths = {
-    root: "./wwwroot"
+    root: "./app"
 }
 
 var dev = true;
 
 paths.scss = paths.root + "/**/*.scss";
 paths.ts = paths.root + "/**/*.ts";
-paths.js = paths.root + "/build/js";
-paths.css = paths.root + "/build/css";
+paths.js = "build/js";
+paths.css = "build/css";
 
 paths.siteJs = "site.js";
 paths.siteCss = "site.css";
 paths.siteMinCss = "site.min.css";
 paths.siteMinJs= "site.min.js";
+
+gulp.task('task',
+    ['scss', 'scss:watch'],
+    function () {
+    });
 
 gulp.task('scss',
     function () {
@@ -39,33 +44,29 @@ gulp.task('scss',
         return scssPipe;
     });
 
-gulp.task('ts',
-    function () {
-        var jsPipe = gulp.src(paths.ts)
-            .pipe(sourcemaps.init())
-            .pipe(typescript())
-            .pipe(sourcemaps.write())
-            .pipe(gulp.dest(paths.js))
-            .pipe(concat(paths.siteJs))
-            .pipe(gulp.dest(paths.js))
-            .pipe(concat(paths.siteMinJs))
-            .pipe(uglify())
-            .pipe(gulp.dest(paths.js));
-
-        return jsPipe;
-    });
-
 gulp.task('scss:watch',
     function() {
         gulp.watch(paths.scss, ['scss']);
     });
 
-gulp.task('ts:watch',
-    function () {
-        gulp.watch(paths.ts, ['ts']);
-    });
+//gulp.task('ts',
+//    function () {
+//        var jsPipe = gulp.src(paths.ts)
+//            .pipe(sourcemaps.init())
+//            .pipe(typescript())
+//            .pipe(sourcemaps.write())
+//            .pipe(gulp.dest(paths.js))
+//            .pipe(concat(paths.siteJs))
+//            .pipe(gulp.dest(paths.js))
+//            .pipe(concat(paths.siteMinJs))
+//            .pipe(uglify())
+//            .pipe(gulp.dest(paths.js));
 
-gulp.task('task',
-    ['scss', 'ts', 'scss:watch', 'ts:watch'],
-    function() {
-    });
+//        return jsPipe;
+//    });
+
+//gulp.task('ts:watch',
+//    function () {
+//        gulp.watch(paths.ts, ['ts']);
+//    });
+
