@@ -64,8 +64,6 @@ namespace Angular2Blank.Web.Authentication
                 return;
             }
 
-            identity.AddClaim(new Claim(ClaimTypes.Role, "user"));
-
             // Create the JWT and write it to a string
             var jwt = new JwtSecurityToken(
                 issuer: _options.Issuer,
