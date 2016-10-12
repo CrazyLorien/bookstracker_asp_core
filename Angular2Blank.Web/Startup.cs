@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore.Migrations;
+using Angular2Blank.Services.Implementation;
+using Angular2Blank.Services.Interfaces;
 
 namespace Angular2Blank.Web
 {
@@ -37,6 +40,11 @@ namespace Angular2Blank.Web
         {
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
+            //services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy("permissions",
+            //        policy => policy.RequireClaim("permission", "user"));
+            //});
 
             DataInstaller.Install(services, Configuration);
             ServicesInstaller.Install(services);

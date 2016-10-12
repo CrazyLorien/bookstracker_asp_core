@@ -8,6 +8,8 @@ using Angular2Blank.Common.Extensions;
 using Angular2Blank.Services.Interfaces;
 using Angular2Blank.Services.Providers;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using System.Collections.Generic;
 
 namespace Angular2Blank.Web.Authentication
 {
@@ -61,6 +63,8 @@ namespace Angular2Blank.Web.Authentication
                 return;
             }
 
+            identity.AddClaim(new Claim(ClaimTypes.Role, "user"));
+
             // Create the JWT and write it to a string
             var jwt = new JwtSecurityToken(
                 issuer: _options.Issuer,
@@ -85,6 +89,7 @@ namespace Angular2Blank.Web.Authentication
         private async Task<ClaimsIdentity> GetIdentity(HttpContext context, string username, string password, DateTime dateTime)
         {
             var userService = context.RequestServices.GetService<IUserService>();
+            var roleService = context.RequestServices.GetService<IRoleService>();
 
             var passwordHash = await userService.GetPasswordHashAsync(username);
 
@@ -95,15 +100,36 @@ namespace Angular2Blank.Web.Authentication
                 return null;
 
             var user = await userService.FindByNameAsync(username);
+            var roles = await userService.GetRolesAsync(user);
 
-            return new ClaimsIdentity(new System.Security.Principal.GenericIdentity(user.Id.ToString(), "Token"), 
-                    new Claim[]
+            var claims = new List<Claim>()
                     {
                         new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                         new Claim(JwtRegisteredClaimNames.Iat, dateTime.ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64),
                         new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString(), ClaimValueTypes.Integer32)
-                    });
+                    };
+
+            if (roles.Count == 0)
+            {
+                var role = await roleService.FindByNameAsync("user");
+                if (role == null)
+                    await roleService.CreateAsync(new Services.Dtos.RoleDto() { Name = "user" });
+                await userService.AddToRoleAsync(user, "user");
+                claims.Add(new Claim(ClaimTypes.Role, "user"));
+            }
+            else
+            {
+                foreach (var role in roles)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, role));
+                }
+            }
+
+
+
+            return new ClaimsIdentity(new System.Security.Principal.GenericIdentity(user.Id.ToString(), "Token"), claims); 
+                    
         }
     }
 }
