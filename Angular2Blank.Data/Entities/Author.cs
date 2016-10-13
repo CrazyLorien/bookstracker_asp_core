@@ -12,6 +12,8 @@ namespace Angular2Blank.Data.Entities
 
         public string Age { get; set; }
 
+        public short Rate { get; set; }
+
         public virtual ICollection<Book> Books { get; set; }
     }
 }

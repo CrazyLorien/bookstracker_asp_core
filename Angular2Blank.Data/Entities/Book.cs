@@ -14,6 +14,8 @@ namespace Angular2Blank.Data.Entities
       
         public int AuthorID { get; set; }
 
+        public short Rate { get; set; }
+
         [ForeignKey("AuthorID")]
         public virtual Author Author {get;set;}
     }
